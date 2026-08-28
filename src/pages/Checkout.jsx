@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ShoppingCart, ClipboardList, CheckCircle2, CreditCard, AlertTriangle, Lock, Package, Clock, Utensils, ShoppingBag, UtensilsCrossed } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function Checkout({ cart, clearCart }) {
     const navigate = useNavigate();
@@ -34,16 +35,16 @@ export default function Checkout({ cart, clearCart }) {
         e.preventDefault();
         
         if (!token || !user) {
-            alert("Please login first to place an order!");
+            toast.error("Please login first to place an order!");
             navigate('/auth');
             return;
         }
         if (cart.length === 0) {
-            alert("Your cart is empty!");
+            toast.error("Your cart is empty!");
             return;
         }
         if (!pickupTime) {
-            alert("Please select a valid pickup time!");
+            toast.error("Please select a valid pickup time!");
             return;
         }
         
@@ -57,12 +58,12 @@ export default function Checkout({ cart, clearCart }) {
                 order_type: orderType, 
                 items: cart.map(item => ({ id: item.id, quantity: item.quantity, price: item.price }))
             });
-            alert(`Order placed successfully! We will have it ready for ${orderType} by ${timeSlots.find(t => t.value === pickupTime)?.label || pickupTime}.`);
+            toast.success(`Order placed successfully! We will have it ready for ${orderType} by ${timeSlots.find(t => t.value === pickupTime)?.label || pickupTime}.`);
             clearCart();
             navigate('/');
         } catch (error) {
             console.error("Error placing order:", error);
-            alert("Failed to place order. Please try again.");
+            toast.error("Failed to place order. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
@@ -140,7 +141,7 @@ export default function Checkout({ cart, clearCart }) {
             {/* ── 2. Main Content Layout ── */}
             <div className="flex-1 w-full max-w-[1600px] mx-auto flex flex-col lg:flex-row gap-5 lg:gap-8 p-4 sm:p-5 lg:p-6 lg:overflow-hidden">
                 
-                {/* Left Column: Mascot Image (Increased Size) */}
+                {/* Left Column: Mascot Image */}
                 <div className="hidden lg:flex flex-col w-[300px] xl:w-[380px] shrink-0 items-center justify-center relative">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-orange-500/10 rounded-full blur-[80px] pointer-events-none" />
                     <img 
@@ -161,7 +162,6 @@ export default function Checkout({ cart, clearCart }) {
                         </div>
                     )}
 
-                    {/* Expandable Order Summary Box */}
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col flex-1 min-h-0">
                         <h2 className="font-bold text-gray-900 text-base mb-3 flex items-center gap-2 shrink-0">
                             <span className="w-7 h-7 bg-orange-100 rounded-lg flex items-center justify-center">
@@ -192,7 +192,6 @@ export default function Checkout({ cart, clearCart }) {
                         </div>
                     </div>
 
-                    {/* Dynamic Order Type Note */}
                     <div className="bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-2xl p-4 flex items-center gap-3 shrink-0">
                         <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
                             {orderType === 'Takeaway' ? <Package className="w-5 h-5 text-orange-600" /> : <Utensils className="w-5 h-5 text-orange-600" />}
@@ -214,7 +213,6 @@ export default function Checkout({ cart, clearCart }) {
                 <div className="w-full lg:w-[320px] xl:w-[360px] shrink-0 flex flex-col justify-center pb-12 lg:pb-0 lg:pr-1">
                     <form onSubmit={handlePlaceOrder} className="space-y-3">
                         
-                        {/* Order Type Selector */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
                             <h2 className="font-bold text-gray-900 text-sm mb-3 flex items-center gap-2">
                                 <span className="w-6 h-6 bg-orange-100 rounded-md flex items-center justify-center">
@@ -236,7 +234,6 @@ export default function Checkout({ cart, clearCart }) {
                             </div>
                         </div>
 
-                        {/* Dropdown Time Selector */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
                             <div className="flex items-center justify-between mb-2">
                                 <h2 className="font-bold text-gray-900 text-sm flex items-center gap-2">
@@ -262,7 +259,6 @@ export default function Checkout({ cart, clearCart }) {
                             </select>
                         </div>
 
-                        {/* Payment Method */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
                             <h2 className="font-bold text-gray-900 text-sm mb-3 flex items-center gap-2">
                                 <span className="w-6 h-6 bg-orange-100 rounded-md flex items-center justify-center">
@@ -294,7 +290,6 @@ export default function Checkout({ cart, clearCart }) {
                             </div>
                         </div>
 
-                        {/* Place order button */}
                         <button
                             type="submit"
                             disabled={isSubmitting}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link, NavLink, Navigate } from 'react-router-dom';
 import { ShoppingCart, UtensilsCrossed, ClipboardList, Menu, X, LogOut, User } from 'lucide-react';
+import { Toaster, toast } from 'react-hot-toast';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
@@ -41,10 +42,10 @@ function App() {
       setCart(cart.map(cartItem =>
         cartItem.id === item.id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
       ));
-      alert(`${item.name} quantity increased!`);
+      toast.success(`${item.name} quantity increased!`);
     } else {
       setCart([...cart, { ...item, quantity: 1 }]);
-      alert(`${item.name} added to cart!`);
+      toast.success(`${item.name} added to cart!`);
     }
   };
 
@@ -64,6 +65,21 @@ function App() {
 
   return (
     <BrowserRouter>
+      {/* ── Toaster Component ── */}
+      <Toaster 
+        position="top-right" 
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#fff',
+            color: '#363636',
+            fontWeight: 'bold',
+            borderRadius: '12px',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+          },
+        }} 
+      />
+
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
