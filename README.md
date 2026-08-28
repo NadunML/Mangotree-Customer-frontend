@@ -18,29 +18,3 @@ A modern, responsive, and beautifully designed customer-facing web application f
 * **Routing:** React Router DOM
 * **HTTP Client:** Axios
 * **Icons:** Lucide React
-
-## 🚀 Getting Started
-
-### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
-
-### Installation
-
-1. Clone the repository:
-   git clone https://github.com/NadunML/Mangotree-Customer-frontend.git
-
-2. Navigate to the project directory:
-   cd Mangotree-Customer-frontend
-
-3. Install dependencies:
-   npm install
-
-4. Start the development server:
-   npm run dev
-
-5. Open your browser and visit http://localhost:5173
-
-## 🔗 Related Repositories
-* **Backend API:** (Add your backend repository link here if available)
-* **Admin Panel:** (Add your admin frontend repository link here if available)
-
