@@ -44,5 +44,3 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 * **Backend API:** (Add your backend repository link here if available)
 * **Admin Panel:** (Add your admin frontend repository link here if available)
 
----
-*© 2026 MangoTree · Fresh Tropical Flavors, Delivered Fast*
