@@ -8,26 +8,38 @@ export default function Cart({ cart, removeFromCart, updateQuantity }) {
     // ── EMPTY CART STATE ──
     if (cart.length === 0) {
         return (
-            <div className="fixed top-[65px] bottom-0 left-0 w-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-orange-950 to-stone-900 text-white z-40 px-4 overflow-y-auto lg:overflow-hidden">
-                <div className="absolute -top-20 -right-20 w-80 h-80 bg-orange-500/20 rounded-full blur-[100px] pointer-events-none" />
-                <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-lime-500/10 rounded-full blur-[100px] pointer-events-none" />
+            <div className="fixed top-[65px] bottom-0 left-0 right-0 z-40 bg-gradient-to-br from-gray-900 via-orange-950 to-stone-900 overflow-hidden flex flex-col">
+                <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-orange-500/15 rounded-full blur-[100px] pointer-events-none" />
+                <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-lime-500/10 rounded-full blur-[100px] pointer-events-none" />
                 
-                <div className="relative z-10 text-center max-w-lg mx-auto pb-16 mt-10 lg:mt-0">
-                    <img 
-                        src="/empty.png" 
-                        alt="Empty Cart Mascot" 
-                        className="w-[180px] sm:w-[240px] object-contain mx-auto mb-8 drop-shadow-[0_20px_50px_rgba(249,115,22,0.3)] animate-float"
-                    />
-                    <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">Your cart is empty</h2>
-                    <p className="text-orange-200/70 mb-8 text-base max-w-sm mx-auto">
-                        Looks like you haven't added any tropical delights yet. Let's fix that!
-                    </p>
-                    <Link
-                        to="/"
-                        className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white font-bold text-base rounded-full hover:bg-orange-600 transition-all duration-200 shadow-xl shadow-orange-900/40 active:scale-95"
-                    >
-                        Browse Our Menu <ArrowRight className="w-4 h-4" />
-                    </Link>
+                <div className="flex-1 w-full max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-center gap-10 lg:gap-20 p-6 relative z-10">
+                    
+                    {/* Left Side Image */}
+                    <div className="flex-1 flex justify-center md:justify-end w-full max-w-[300px] md:max-w-none">
+                        <img 
+                            src="/empty.png" 
+                            alt="Empty Cart Mascot" 
+                            className="w-full max-w-[350px] lg:max-w-[450px] object-contain drop-shadow-[0_20px_50px_rgba(249,115,22,0.2)] animate-float"
+                        />
+                    </div>
+
+                    {/* Right Side Content */}
+                    <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left w-full">
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight">
+                            Your cart is empty
+                        </h1>
+                        <p className="text-orange-200/70 text-base sm:text-lg max-w-md mb-10 leading-relaxed">
+                            Looks like you haven't added any tropical delights yet. Let's fix that!
+                        </p>
+                        
+                        <Link
+                            to="/"
+                            className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-orange-500 text-white font-bold text-lg rounded-full hover:bg-orange-600 transition-all duration-300 shadow-[0_10px_30px_rgba(249,115,22,0.4)] hover:shadow-[0_15px_40px_rgba(249,115,22,0.6)] active:scale-95"
+                        >
+                            Browse Our Menu <ArrowRight className="w-5 h-5" />
+                        </Link>
+                    </div>
+
                 </div>
             </div>
         );

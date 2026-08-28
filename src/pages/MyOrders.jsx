@@ -52,54 +52,35 @@ export default function MyOrders() {
     /* ── EMPTY STATE ── */
     if (orders.length === 0) {
         return (
-            <div className="fixed top-[65px] bottom-0 left-0 right-0 z-40 bg-gray-50 flex flex-col overflow-y-auto">
-                <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-orange-950 to-stone-900 text-white py-20 sm:py-28 px-4 text-center shrink-0">
-                    <div className="absolute -top-32 -right-32 w-[400px] h-[400px] bg-orange-500/15 rounded-full blur-3xl pointer-events-none" />
-                    <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-lime-500/10 rounded-full blur-3xl pointer-events-none" />
-                    <div className="relative max-w-lg mx-auto">
-                        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-8">
+            <div className="fixed top-[65px] bottom-0 left-0 right-0 z-40 bg-gradient-to-br from-gray-900 via-orange-950 to-stone-900 overflow-hidden flex flex-col">
+                <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-orange-500/15 rounded-full blur-[100px] pointer-events-none" />
+                <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-lime-500/10 rounded-full blur-[100px] pointer-events-none" />
+                
+                <div className="flex-1 w-full max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-center gap-10 lg:gap-20 p-6 relative z-10">
+                    <div className="flex-1 flex justify-center md:justify-end w-full max-w-[300px] md:max-w-none">
+                        <img 
+                            src="/my_order.jpg" 
+                            alt="Sleeping Mango Mascot" 
+                            className="w-full max-w-[350px] lg:max-w-[450px] object-contain drop-shadow-[0_20px_50px_rgba(249,115,22,0.2)] animate-float"
+                        />
+                    </div>
+                    <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left w-full">
+                        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6 shadow-sm">
                             <span className="w-2 h-2 rounded-full bg-lime-400 animate-pulse" />
                             <span className="text-orange-300 text-xs font-semibold tracking-[0.18em] uppercase">My Orders</span>
                         </div>
-                        <div className="w-24 h-24 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <ClipboardList className="w-11 h-11 text-white/80" />
-                        </div>
-                        <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">No orders yet</h1>
-                        <p className="text-orange-200/70 mb-8 text-base max-w-sm mx-auto leading-relaxed">
-                            You haven't placed any orders yet. Start exploring our tropical menu!
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight">
+                            No orders yet
+                        </h1>
+                        <p className="text-orange-200/70 text-base sm:text-lg max-w-md mb-10 leading-relaxed">
+                            Looks like you haven't placed any orders yet. Start exploring our tropical menu and treat yourself!
                         </p>
                         <Link
                             to="/"
-                            className="inline-flex items-center gap-2 px-8 py-4 bg-orange-500 text-white font-bold text-base rounded-full hover:bg-orange-600 transition-all duration-200 shadow-xl shadow-orange-900/40 active:scale-95"
+                            className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-orange-500 text-white font-bold text-lg rounded-full hover:bg-orange-600 transition-all duration-300 shadow-[0_10px_30px_rgba(249,115,22,0.4)] hover:shadow-[0_15px_40px_rgba(249,115,22,0.6)] active:scale-95"
                         >
-                            Browse Our Menu <ArrowRight className="w-4 h-4" />
+                            Browse Our Menu <ArrowRight className="w-5 h-5" />
                         </Link>
-                    </div>
-                </div>
-
-                <div className="bg-gray-50 py-14 px-4 shrink-0 mb-10">
-                    <div className="max-w-4xl mx-auto">
-                        <div className="text-center mb-10">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-2">How it works</h2>
-                            <p className="text-gray-400 text-sm">Order in 3 simple steps</p>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 relative">
-                            <div className="hidden sm:block absolute top-10 left-1/4 right-1/4 h-0.5 bg-orange-100 z-0" />
-                            {[
-                                { step: '01', icon: <UtensilsCrossed className="w-7 h-7 text-orange-400" />, title: 'Browse Menu',  desc: 'Explore our chef-curated tropical dishes and add your favourites.' },
-                                { step: '02', icon: <ShoppingCart className="w-7 h-7 text-orange-400" />,  title: 'Add to Cart',  desc: 'Review your cart, adjust quantities, and proceed to checkout.' },
-                                { step: '03', icon: <Truck className="w-7 h-7 text-orange-400" />,        title: 'Fast Delivery', desc: 'Sit back and relax — your fresh order arrives in under 30 minutes.' },
-                            ].map(s => (
-                                <div key={s.step} className="bg-white rounded-2xl p-7 text-center shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-gray-100 relative z-10">
-                                    <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-extrabold mx-auto mb-4 shadow-md shadow-orange-200">
-                                        {s.step}
-                                    </div>
-                                    <div className="flex items-center justify-center mb-3">{s.icon}</div>
-                                    <h4 className="font-bold text-gray-900 text-base mb-2">{s.title}</h4>
-                                    <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
-                                </div>
-                            ))}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -181,20 +162,31 @@ export default function MyOrders() {
                                         </span>
                                     </div>
 
-                                    {/* Card body */}
-                                    <div className="px-5 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-4">
+                                    {/* Card body - UPDATED TO A LIST */}
+                                    <div className="px-5 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-start gap-4">
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-gray-400 mb-2">Dishes Ordered</p>
-                                            <p className="text-sm text-gray-700 font-medium leading-relaxed">
-                                                {order.items.map(item => `${item.item_name} ×${item.quantity}`).join(' · ')}
-                                            </p>
-                                            <p className="text-xs text-gray-400 mt-2">
-                                                via <span className="font-semibold text-gray-600">{order.payment_method}</span>
+                                            <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-gray-400 mb-3">Dishes Ordered</p>
+                                            
+                                            {/* Beautiful List instead of paragraph */}
+                                            <ul className="space-y-2.5 mb-4">
+                                                {order.items.map((item, i) => (
+                                                    <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
+                                                        <span className="bg-orange-100 text-orange-700 font-extrabold px-2 py-0.5 rounded text-[11px] leading-none mt-0.5 shrink-0 shadow-sm border border-orange-200/50">
+                                                            ×{item.quantity}
+                                                        </span>
+                                                        <span className="font-medium leading-snug">{item.item_name}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+
+                                            <p className="text-[11px] text-gray-400 border-t border-gray-100 pt-3 inline-block">
+                                                Paid via <span className="font-semibold text-gray-600">{order.payment_method}</span>
                                             </p>
                                         </div>
-                                        <div className="flex-shrink-0 sm:text-right bg-gray-50 sm:bg-transparent p-3 sm:p-0 rounded-xl mt-2 sm:mt-0">
+                                        
+                                        <div className="flex-shrink-0 sm:text-right bg-gray-50 sm:bg-transparent p-4 sm:p-0 rounded-xl mt-2 sm:mt-0 border border-gray-100 sm:border-none">
                                             <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-gray-400">Total Paid</p>
-                                            <p className="text-lg sm:text-xl font-extrabold text-gray-900 mt-0.5">Rs. {Number(order.total_amount).toLocaleString()}</p>
+                                            <p className="text-xl sm:text-2xl font-extrabold text-gray-900 mt-1">Rs. {Number(order.total_amount).toLocaleString()}</p>
                                         </div>
                                     </div>
 
@@ -206,7 +198,7 @@ export default function MyOrders() {
                                         </p>
                                         <Link
                                             to="/"
-                                            className="px-5 py-2 border-2 border-orange-500 text-orange-500 text-xs font-bold uppercase tracking-wide rounded-full hover:bg-orange-500 hover:text-white transition-all duration-200"
+                                            className="px-5 py-2 border border-orange-500 text-orange-500 text-xs font-bold uppercase tracking-wide rounded-full hover:bg-orange-500 hover:text-white transition-all duration-200"
                                         >
                                             Reorder
                                         </Link>

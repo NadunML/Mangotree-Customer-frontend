@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link, NavLink, Navigate } from 'react-router-dom';
-import { ShoppingCart, UtensilsCrossed, ClipboardList, Menu, X, LogOut, User } from 'lucide-react';
+import { ShoppingCart, UtensilsCrossed, ClipboardList, Menu, X, LogOut, User, Info } from 'lucide-react';
 import { Toaster, toast } from 'react-hot-toast';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Auth from './pages/Auth';
 import MyOrders from './pages/MyOrders';
+import AboutUs from './pages/AboutUs';
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('token');
@@ -61,7 +62,7 @@ function App() {
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   const navLinkClass = ({ isActive }) =>
-    `text-sm font-medium transition-colors duration-200 ${isActive ? 'text-orange-500' : 'text-gray-600 hover:text-orange-500'}`;
+    `text-sm font-medium transition-colors duration-200 flex items-center gap-1.5 ${isActive ? 'text-orange-500' : 'text-gray-600 hover:text-orange-500'}`;
 
   return (
     <BrowserRouter>
@@ -91,12 +92,11 @@ function App() {
               </span>
             </Link>
 
+            {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-8">
+              
               <NavLink to="/" end className={navLinkClass}>
-                <span className="flex items-center gap-1.5">
-                  <UtensilsCrossed className="w-4 h-4" />
-                  Menu
-                </span>
+                <UtensilsCrossed className="w-4 h-4" /> Menu
               </NavLink>
 
               {token && (
@@ -111,36 +111,45 @@ function App() {
                 </Link>
               )}
 
-              {token ? (
-                <div className="flex items-center gap-4">
-                  <NavLink to="/my-orders" className={navLinkClass}>
-                    <span className="flex items-center gap-1.5">
-                      <ClipboardList className="w-4 h-4" />
-                      My Orders
-                    </span>
-                  </NavLink>
-                  <span className="flex items-center gap-1.5 text-sm text-gray-500">
-                    <User className="w-4 h-4" />
-                    Hi, <span className="font-semibold text-gray-800">{user?.name?.split(' ')[0]}</span>
-                  </span>
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-full border border-red-200 text-red-500 hover:bg-red-50 transition-colors"
-                  >
-                    <LogOut className="w-3.5 h-3.5" />
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <Link
-                  to="/auth"
-                  className="text-sm font-semibold px-5 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors shadow-sm"
-                >
-                  Login
-                </Link>
+              {token && (
+                <NavLink to="/my-orders" className={navLinkClass}>
+                  <ClipboardList className="w-4 h-4" /> My Orders
+                </NavLink>
               )}
+
+              {/* About Us is now positioned right before the Auth/Logout section */}
+              <NavLink to="/about" className={navLinkClass}>
+                <Info className="w-4 h-4" /> About Us
+              </NavLink>
+
+              {/* Vertical Divider & User/Auth Section */}
+              <div className="flex items-center gap-4 border-l border-gray-200 pl-6">
+                {token ? (
+                  <>
+                    <span className="flex items-center gap-1.5 text-sm text-gray-500">
+                      <User className="w-4 h-4" />
+                      Hi, <span className="font-semibold text-gray-800">{user?.name?.split(' ')[0]}</span>
+                    </span>
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center gap-1.5 text-sm font-medium px-4 py-1.5 rounded-full border border-red-200 text-red-500 hover:bg-red-50 transition-colors"
+                    >
+                      <LogOut className="w-3.5 h-3.5" /> Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    to="/auth"
+                    className="text-sm font-semibold px-5 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors shadow-sm"
+                  >
+                    Login
+                  </Link>
+                )}
+              </div>
+              
             </div>
 
+            {/* Mobile Menu Button */}
             <div className="flex md:hidden items-center gap-4">
               {token && (
                 <Link to="/cart" className="relative text-gray-600">
@@ -162,9 +171,11 @@ function App() {
             </div>
           </div>
 
+          {/* Mobile Menu Dropdown */}
           {isMobileMenuOpen && (
             <div className="md:hidden py-4 border-t border-gray-100 animate-slide-down">
               <div className="flex flex-col gap-1">
+                
                 <Link
                   to="/"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -172,6 +183,7 @@ function App() {
                 >
                   <UtensilsCrossed className="w-4 h-4" /> Menu
                 </Link>
+
                 {token && (
                   <Link
                     to="/my-orders"
@@ -181,6 +193,16 @@ function App() {
                     <ClipboardList className="w-4 h-4" /> My Orders
                   </Link>
                 )}
+
+                {/* About Us placed right before Auth/Logout on Mobile too */}
+                <Link
+                  to="/about"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-orange-50 hover:text-orange-500 rounded-xl transition-colors"
+                >
+                  <Info className="w-4 h-4" /> About Us
+                </Link>
+
                 {token ? (
                   <div className="px-4 py-3 flex items-center justify-between border-t border-gray-100 mt-2 pt-4">
                     <span className="flex items-center gap-1.5 text-sm text-gray-500">
@@ -212,6 +234,7 @@ function App() {
       <main className="flex-1 bg-gray-50">
         <Routes>
           <Route path="/" element={<Home addToCart={addToCart} />} />
+          <Route path="/about" element={<AboutUs />} />
           <Route path="/auth" element={<Auth />} />
           
           <Route path="/cart" element={
@@ -235,7 +258,7 @@ function App() {
       </main>
 
       <footer className="bg-white border-t border-gray-100 py-6 text-center text-sm text-gray-400">
-        © {new Date().getFullYear()} MangoTree · Fresh Tropical Flavors, Delivered Fast
+        © {new Date().getFullYear()} MangoTree · Pre-order & Skip the Line
       </footer>
     </BrowserRouter>
   );
