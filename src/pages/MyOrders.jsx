@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import { Link, useNavigate } from 'react-router-dom';
 import {
     ClipboardList, UtensilsCrossed, ShoppingCart, ShoppingBag,
@@ -20,7 +20,7 @@ export default function MyOrders() {
         }
         const fetchMyOrders = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/orders/user/${user.id}`);
+                const response = await axiosInstance.get(`/orders/user/${user.id}`);
                 setOrders(response.data);
             } catch (error) {
                 console.error("Error fetching orders:", error);
@@ -49,7 +49,6 @@ export default function MyOrders() {
         }
     };
 
-    /* ── EMPTY STATE ── */
     if (orders.length === 0) {
         return (
             <div className="fixed top-[65px] bottom-0 left-0 right-0 z-40 bg-gradient-to-br from-gray-900 via-orange-950 to-stone-900 overflow-hidden flex flex-col">
@@ -59,7 +58,7 @@ export default function MyOrders() {
                 <div className="flex-1 w-full max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-center gap-10 lg:gap-20 p-6 relative z-10">
                     <div className="flex-1 flex justify-center md:justify-end w-full max-w-[300px] md:max-w-none">
                         <img 
-                            src="/my_order.jpg" 
+                            src="/my_order.png" 
                             alt="Sleeping Mango Mascot" 
                             className="w-full max-w-[350px] lg:max-w-[450px] object-contain drop-shadow-[0_20px_50px_rgba(249,115,22,0.2)] animate-float"
                         />
@@ -87,11 +86,8 @@ export default function MyOrders() {
         );
     }
 
-    /* ── ORDERS LIST STATE ── */
     return (
         <div className="fixed top-[65px] bottom-0 left-0 right-0 z-40 bg-gray-50 flex flex-col overflow-y-auto lg:overflow-hidden">
-
-            {/* ── 1. Dark Compact Header ── */}
             <div className="shrink-0 bg-gradient-to-br from-gray-900 via-orange-950 to-stone-900 px-6 sm:px-10 py-4 sm:py-5 shadow-md relative overflow-hidden">
                 <div className="absolute -top-32 -right-32 w-[400px] h-[400px] bg-orange-500/15 rounded-full blur-3xl pointer-events-none" />
                 <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-lime-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -117,10 +113,7 @@ export default function MyOrders() {
                 </div>
             </div>
 
-            {/* ── 2. Main Content Layout ── */}
             <div className="flex-1 w-full max-w-[1600px] mx-auto flex flex-col lg:flex-row gap-5 lg:gap-8 p-4 sm:p-5 lg:p-6 lg:overflow-hidden">
-                
-                {/* Left Column: Mascot Image */}
                 <div className="hidden lg:flex flex-col w-[300px] xl:w-[380px] shrink-0 items-center justify-center relative">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-orange-500/10 rounded-full blur-[80px] pointer-events-none" />
                     <img 
@@ -130,7 +123,6 @@ export default function MyOrders() {
                     />
                 </div>
 
-                {/* Right Column: Scrollable Order List */}
                 <div className="flex-1 flex flex-col h-full pr-1 lg:pr-2 pb-12 lg:pb-0">
                     <div className="flex-1 overflow-y-auto pr-2 space-y-4">
                         {orders.map((order, idx) => {
@@ -141,7 +133,6 @@ export default function MyOrders() {
                                     className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md hover:border-orange-100 transition-all duration-200 animate-fade-in"
                                     style={{ animationDelay: `${idx * 60}ms` }}
                                 >
-                                    {/* Card top */}
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between px-5 sm:px-6 py-4 border-b border-gray-50 gap-3">
                                         <div className="flex items-center gap-4">
                                             <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -162,12 +153,9 @@ export default function MyOrders() {
                                         </span>
                                     </div>
 
-                                    {/* Card body - UPDATED TO A LIST */}
                                     <div className="px-5 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-start gap-4">
                                         <div className="flex-1 min-w-0">
                                             <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-gray-400 mb-3">Dishes Ordered</p>
-                                            
-                                            {/* Beautiful List instead of paragraph */}
                                             <ul className="space-y-2.5 mb-4">
                                                 {order.items.map((item, i) => (
                                                     <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
@@ -178,7 +166,6 @@ export default function MyOrders() {
                                                     </li>
                                                 ))}
                                             </ul>
-
                                             <p className="text-[11px] text-gray-400 border-t border-gray-100 pt-3 inline-block">
                                                 Paid via <span className="font-semibold text-gray-600">{order.payment_method}</span>
                                             </p>
@@ -190,7 +177,6 @@ export default function MyOrders() {
                                         </div>
                                     </div>
 
-                                    {/* Card footer */}
                                     <div className="px-5 sm:px-6 py-3 bg-gray-50/80 border-t border-gray-100 flex items-center justify-between">
                                         <p className="text-xs font-semibold text-gray-500 flex items-center gap-1.5">
                                             <Package className="w-3.5 h-3.5 text-gray-400" />

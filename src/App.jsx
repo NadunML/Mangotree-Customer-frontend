@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link, NavLink, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router-dom';
 import { ShoppingCart, UtensilsCrossed, ClipboardList, Menu, X, LogOut, User, Info } from 'lucide-react';
 import { Toaster, toast } from 'react-hot-toast';
 import Home from './pages/Home';
@@ -8,14 +8,7 @@ import Checkout from './pages/Checkout';
 import Auth from './pages/Auth';
 import MyOrders from './pages/MyOrders';
 import AboutUs from './pages/AboutUs';
-
-const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    return <Navigate to="/auth" replace />;
-  }
-  return children;
-};
+import ProtectedRoute from './pages/ProtectedRoute';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -66,7 +59,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      {/* ── Toaster Component ── */}
+      {/* Toast Notifications */}
       <Toaster 
         position="top-right" 
         toastOptions={{
@@ -92,9 +85,8 @@ function App() {
               </span>
             </Link>
 
-            {/* Desktop Menu */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
-              
               <NavLink to="/" end className={navLinkClass}>
                 <UtensilsCrossed className="w-4 h-4" /> Menu
               </NavLink>
@@ -117,12 +109,11 @@ function App() {
                 </NavLink>
               )}
 
-              {/* About Us is now positioned right before the Auth/Logout section */}
               <NavLink to="/about" className={navLinkClass}>
                 <Info className="w-4 h-4" /> About Us
               </NavLink>
 
-              {/* Vertical Divider & User/Auth Section */}
+              {/* Vertical Divider & User Profile/Auth Section */}
               <div className="flex items-center gap-4 border-l border-gray-200 pl-6">
                 {token ? (
                   <>
@@ -146,7 +137,6 @@ function App() {
                   </Link>
                 )}
               </div>
-              
             </div>
 
             {/* Mobile Menu Button */}
@@ -175,7 +165,6 @@ function App() {
           {isMobileMenuOpen && (
             <div className="md:hidden py-4 border-t border-gray-100 animate-slide-down">
               <div className="flex flex-col gap-1">
-                
                 <Link
                   to="/"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -194,7 +183,6 @@ function App() {
                   </Link>
                 )}
 
-                {/* About Us placed right before Auth/Logout on Mobile too */}
                 <Link
                   to="/about"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -233,24 +221,26 @@ function App() {
 
       <main className="flex-1 bg-gray-50">
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home addToCart={addToCart} />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/auth" element={<Auth />} />
           
+          {/* Protected Customer Routes */}
           <Route path="/cart" element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="customer">
               <Cart cart={cart} removeFromCart={removeFromCart} updateQuantity={updateQuantity} />
             </ProtectedRoute>
           } />
           
           <Route path="/checkout" element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="customer">
               <Checkout cart={cart} clearCart={clearCart} />
             </ProtectedRoute>
           } />
           
           <Route path="/my-orders" element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="customer">
               <MyOrders />
             </ProtectedRoute>
           } />

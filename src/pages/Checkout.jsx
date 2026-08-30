@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import { ShoppingCart, ClipboardList, CheckCircle2, CreditCard, AlertTriangle, Lock, Package, Clock, Utensils, ShoppingBag, UtensilsCrossed } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -16,7 +16,6 @@ export default function Checkout({ cart, clearCart }) {
 
     const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-    // Pre-defined time slots from 12:00 PM to 10:00 PM
     const timeSlots = [
         { value: '12:00', label: '12:00 PM' }, { value: '12:30', label: '12:30 PM' },
         { value: '13:00', label: '01:00 PM' }, { value: '13:30', label: '01:30 PM' },
@@ -50,7 +49,7 @@ export default function Checkout({ cart, clearCart }) {
         
         setIsSubmitting(true);
         try {
-            await axios.post('http://localhost:5000/api/orders', {
+            await axiosInstance.post('/orders', {
                 user_id: user.id,
                 total_amount: totalPrice,
                 payment_method: paymentMethod,
@@ -69,7 +68,6 @@ export default function Checkout({ cart, clearCart }) {
         }
     };
 
-    // ── EMPTY STATE ──
     if (cart.length === 0) {
         return (
             <div className="fixed top-[65px] bottom-0 left-0 w-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-orange-950 to-stone-900 text-white z-40 px-4 overflow-y-auto lg:overflow-hidden">
@@ -107,8 +105,6 @@ export default function Checkout({ cart, clearCart }) {
 
     return (
         <div className="fixed top-[65px] bottom-0 left-0 right-0 z-40 bg-gray-50 flex flex-col overflow-y-auto lg:overflow-hidden">
-            
-            {/* ── 1. Dark Compact Header ── */}
             <div className="shrink-0 bg-gradient-to-br from-gray-900 via-orange-950 to-stone-900 px-6 sm:px-10 py-4 sm:py-5 shadow-md relative overflow-hidden">
                 <div className="absolute top-0 right-1/4 w-[300px] h-[300px] bg-orange-500/10 rounded-full blur-[60px] pointer-events-none" />
                 <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] bg-amber-500/10 rounded-full blur-[60px] pointer-events-none" />
@@ -138,10 +134,7 @@ export default function Checkout({ cart, clearCart }) {
                 </div>
             </div>
 
-            {/* ── 2. Main Content Layout ── */}
             <div className="flex-1 w-full max-w-[1600px] mx-auto flex flex-col lg:flex-row gap-5 lg:gap-8 p-4 sm:p-5 lg:p-6 lg:overflow-hidden">
-                
-                {/* Left Column: Mascot Image */}
                 <div className="hidden lg:flex flex-col w-[300px] xl:w-[380px] shrink-0 items-center justify-center relative">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-orange-500/10 rounded-full blur-[80px] pointer-events-none" />
                     <img 
@@ -151,7 +144,6 @@ export default function Checkout({ cart, clearCart }) {
                     />
                 </div>
 
-                {/* Middle Column: Order Summary */}
                 <div className="flex-1 flex flex-col h-full pr-1 lg:pr-2 pb-4 lg:pb-0 space-y-4">
                     {!token && (
                         <div className="flex items-center gap-3 p-3 bg-amber-50 border border-amber-200 rounded-xl shrink-0">
@@ -209,10 +201,8 @@ export default function Checkout({ cart, clearCart }) {
                     </div>
                 </div>
 
-                {/* ── Right Column: Forms & Action ── */}
                 <div className="w-full lg:w-[320px] xl:w-[360px] shrink-0 flex flex-col justify-center pb-12 lg:pb-0 lg:pr-1">
                     <form onSubmit={handlePlaceOrder} className="space-y-3">
-                        
                         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
                             <h2 className="font-bold text-gray-900 text-sm mb-3 flex items-center gap-2">
                                 <span className="w-6 h-6 bg-orange-100 rounded-md flex items-center justify-center">
@@ -320,7 +310,6 @@ export default function Checkout({ cart, clearCart }) {
                         </p>
                     </form>
                 </div>
-
             </div>
         </div>
     );
