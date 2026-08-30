@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 import { ArrowRight, Lock } from 'lucide-react';
 
 export default function Auth() {
@@ -15,10 +15,10 @@ export default function Auth() {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+            const endpoint = isLogin ? '/auth/login' : '/auth/register';
             const payload = isLogin ? { email, password } : { name, email, password };
             
-            const { data } = await axios.post(`http://localhost:5000${endpoint}`, payload);
+            const { data } = await axiosInstance.post(endpoint, payload);
             
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
@@ -33,17 +33,12 @@ export default function Auth() {
     };
 
     return (
-        /* fixed inset-0 z-50 completely covers the Header and Footer, forcing exact screen fit with no scroll */
         <div className="fixed inset-0 z-50 flex bg-gray-50 overflow-hidden">
-            
-            {/* ── Left Panel (Branding & Mascot) ── */}
             <div className="hidden lg:flex flex-col justify-center items-center w-1/2 h-full bg-gradient-to-br from-gray-900 via-orange-950 to-stone-900 text-white p-10 xl:p-16 relative gap-10 xl:gap-14">
-                {/* Background Glow */}
                 <div className="absolute top-0 left-0 w-full h-full bg-[url('/noise.png')] opacity-20 pointer-events-none mix-blend-overlay"></div>
                 <div className="absolute -top-32 -left-32 w-96 h-96 bg-orange-500/20 rounded-full blur-[100px] pointer-events-none" />
                 <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
 
-                {/* Text Content */}
                 <div className="relative z-10 w-full max-w-lg">
                     <h1 className="text-4xl xl:text-5xl font-extrabold text-white mb-4 leading-tight">
                         Your Cravings, <br />
@@ -56,7 +51,6 @@ export default function Auth() {
                     </p>
                 </div>
 
-                {/* Mascot Image */}
                 <div className="relative z-10 flex justify-center w-full">
                     <img 
                         src="/login.png" 
@@ -66,9 +60,7 @@ export default function Auth() {
                 </div>
             </div>
 
-            {/* ── Right Panel (Auth Form) ── */}
             <div className="w-full lg:w-1/2 h-full flex flex-col items-center justify-center p-6 lg:p-8 relative">
-                {/* Mobile back to home */}
                 <Link to="/" className="absolute top-6 left-6 lg:hidden text-sm font-semibold text-gray-500 hover:text-orange-500 transition-colors">
                     ← Back to Menu
                 </Link>
@@ -157,7 +149,6 @@ export default function Auth() {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 }
