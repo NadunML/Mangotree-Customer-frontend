@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
 import { ArrowRight, Lock } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function Auth() {
     const [isLogin, setIsLogin] = useState(true);
@@ -20,13 +21,21 @@ export default function Auth() {
             
             const { data } = await axiosInstance.post(endpoint, payload);
             
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            
-            window.location.href = '/';
+            if (isLogin) {
+                // Login එක සාර්ථක නම් Home එකට යනවා
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                window.location.href = '/';
+            } else {
+                // Sign Up එක සාර්ථක නම් Login Page එකට මාරු කරනවා
+                toast.success("Account created successfully! Please sign in.");
+                setIsLogin(true); 
+                setPassword(''); // ආරක්ෂාවට Password එක හිස් කරනවා
+            }
         } catch (error) {
             console.error("Auth error", error);
-            alert(error.response?.data?.error || "Authentication failed!");
+            const errorMsg = error.response?.data?.message || error.response?.data?.error || error.response?.data?.errors?.[0]?.msg || "Authentication failed!";
+            toast.error(errorMsg);
         } finally {
             setIsSubmitting(false);
         }

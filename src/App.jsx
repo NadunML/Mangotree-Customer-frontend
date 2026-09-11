@@ -15,7 +15,10 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user'));
+  
+  // මේ තියෙන්නේ Crash වෙන එක නවත්වන ආරක්ෂිත කේතය (Safe JSON Parsing)
+  const userString = localStorage.getItem('user');
+  const user = userString && userString !== 'undefined' ? JSON.parse(userString) : null;
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -115,11 +118,11 @@ function App() {
 
               {/* Vertical Divider & User Profile/Auth Section */}
               <div className="flex items-center gap-4 border-l border-gray-200 pl-6">
-                {token ? (
+                {token && user ? (
                   <>
                     <span className="flex items-center gap-1.5 text-sm text-gray-500">
                       <User className="w-4 h-4" />
-                      Hi, <span className="font-semibold text-gray-800">{user?.name?.split(' ')[0]}</span>
+                      Hi, <span className="font-semibold text-gray-800">{user.name?.split(' ')[0]}</span>
                     </span>
                     <button
                       onClick={handleLogout}
@@ -191,11 +194,11 @@ function App() {
                   <Info className="w-4 h-4" /> About Us
                 </Link>
 
-                {token ? (
+                {token && user ? (
                   <div className="px-4 py-3 flex items-center justify-between border-t border-gray-100 mt-2 pt-4">
                     <span className="flex items-center gap-1.5 text-sm text-gray-500">
                       <User className="w-4 h-4" />
-                      Hi, <span className="font-semibold text-gray-800">{user?.name}</span>
+                      Hi, <span className="font-semibold text-gray-800">{user.name}</span>
                     </span>
                     <button
                       onClick={handleLogout}
